@@ -1,0 +1,19 @@
+.wrapper {
+  transition: 0.3s;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 0.3s;
+}
+
+.modal {
+  transform: translateY(0);
+  transition: all 0.3s 0.3s;
+}
+
+.invisible .modal {
+  transform: translateY(-200%);
+  transition-delay: 0s;
+}

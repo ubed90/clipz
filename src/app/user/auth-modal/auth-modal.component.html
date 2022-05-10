@@ -1,0 +1,30 @@
+<app-modal modalID="auth">
+  <p class="text-2xl font-bold" heading>Your Account</p>
+
+  <app-tabs-container>
+    <!-- <ul class="flex flex-wrap mb-4" tabs>
+      <li class="flex-auto text-center">
+        <a
+          class="block rounded py-3 px-4 transition hover:text-white text-white bg-indigo-400"
+          href="#"
+          >Login</a
+        >
+      </li>
+      <li class="flex-auto text-center">
+        <a
+          class="block rounded py-3 px-4 transition hover:text-indigo-400"
+          href="#"
+          >Register</a
+        >
+      </li>
+    </ul> -->
+
+    <app-tab tabTitle="Login">
+      <app-login></app-login>
+    </app-tab>
+
+    <app-tab tabTitle="Register">
+      <app-register></app-register>
+    </app-tab>
+  </app-tabs-container>
+</app-modal>
