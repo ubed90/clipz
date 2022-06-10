@@ -17,7 +17,6 @@ export class AuthService {
   public isAuthenticated$: Observable<boolean>;
   public isAuthenticatedWithDelay$: Observable<boolean>;
   private redirect: boolean = false;
-  public userName: string | null | undefined = '';
 
   constructor(
     private auth: AngularFireAuth,
@@ -40,8 +39,6 @@ export class AuthService {
       .subscribe((data) => {
         this.redirect = data.authOnly ?? false;
       });
-
-    this.auth.user.subscribe((user) => (this.userName = user?.displayName));
   }
 
   public async createUser(userData: IUser) {
@@ -88,7 +85,5 @@ export class AuthService {
     if (this.redirect) {
       await this.router.navigateByUrl('/');
     }
-
-    this.userName = '';
   }
 }

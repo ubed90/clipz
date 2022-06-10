@@ -3,78 +3,96 @@
   <div class="rounded relative flex flex-col">
     <div class="font-bold mb-6">Upload Video</div>
 
-    <ng-container *ngIf="!nextStep; else uploadFormCtr">
-      <!-- Upload Dropbox -->
-      <div
-        app-event-blocker
-        (dragend)="isDragOver = false"
-        (dragenter)="isDragOver = true"
-        (dragover)="isDragOver = true"
-        (dragleave)="isDragOver = false"
-        (mouseleave)="isDragOver = false"
-        (drop)="storeFile($event)"
-        [ngClass]="{
-          'bg-indigo-400 border-indigo-400 border-solid': isDragOver
-        }"
-        class="w-full px-10 py-40 rounded text-center cursor-pointer border border-dashed border-gray-400 transition duration-500 hover:text-white hover:bg-indigo-400 hover:border-indigo-400 hover:border-solid text-xl"
-      >
-        <h5>Drop your file here (mp4 only!)</h5>
-      </div>
-      <!-- FallBack Upload -->
-      <input
-        type="file"
-        name="upload"
-        id="upload"
-        class="mt-4"
-        (change)="storeFile($event)"
-      />
+    <ng-container *ngIf="!ffmpegService.isReady; else uploadEditorContainer">
+      <span class="material-icons text-center text-6xl p-8 animate-spin">
+        settings
+      </span>
     </ng-container>
 
-    <!-- Video Editor -->
-    <ng-template #uploadFormCtr>
-      <app-alert *ngIf="showAlert" [color]="alertColor">
-        <p>{{ alertMsg }}</p>
-        <p *ngIf="showPercentage">{{ percentage | percent }}</p>
-
-        <!-- Ubed's Method -->
-        <!-- <p>{{ (percentage | async | number: "1.0-0") + "%" }}</p> -->
-      </app-alert>
-
-      <!-- Form -->
-      <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
-        <!-- Screenshots -->
-        <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div class="border-8 cursor-pointer border-green-400">
-            <img src="assets/img/1.jpg" />
-          </div>
-          <div class="border-8 cursor-pointer border-transparent">
-            <img src="assets/img/2.jpg" />
-          </div>
-          <div class="border-8 cursor-pointer border-transparent">
-            <img src="assets/img/3.jpg" />
-          </div>
+    <ng-template #uploadEditorContainer>
+      <!-- Upload DropBox -->
+      <ng-container *ngIf="!nextStep; else uploadFormCtr">
+        <!-- Upload Dropbox -->
+        <div
+          app-event-blocker
+          (dragend)="isDragOver = false"
+          (dragenter)="isDragOver = true"
+          (dragover)="isDragOver = true"
+          (dragleave)="isDragOver = false"
+          (mouseleave)="isDragOver = false"
+          (drop)="storeFile($event)"
+          [ngClass]="{
+            'bg-indigo-400 border-indigo-400 border-solid': isDragOver
+          }"
+          class="w-full px-10 py-40 rounded text-center cursor-pointer border border-dashed border-gray-400 transition duration-500 hover:text-white hover:bg-indigo-400 hover:border-indigo-400 hover:border-solid text-xl"
+        >
+          <h5 *ngIf="!ffmpegService.isRunning; else generatingScreenshots">
+            Drop your file here (mp4 only!)
+          </h5>
+          <ng-template #generatingScreenshots>
+            <h5>Please wait Your Clip is Being Proccessed...</h5>
+            <span class="material-icons text-center text-6xl p-8 animate-spin"
+              >autorenew</span
+            >
+          </ng-template>
         </div>
+        <!-- FallBack Upload -->
+        <input
+          type="file"
+          name="upload"
+          id="upload"
+          class="mt-4"
+          (change)="storeFile($event)"
+        />
+      </ng-container>
 
-        <!-- Title -->
-        <div class="mt-4">
-          <label class="block text-xl mb-4">Title</label>
-          <app-input [control]="title" placeholder="Enter Title"> </app-input>
-        </div>
+      <!-- Video Editor -->
+      <ng-template #uploadFormCtr>
+        <app-alert *ngIf="showAlert" [color]="alertColor">
+          <p>{{ alertMsg }}</p>
+          <p *ngIf="showPercentage">{{ percentage | percent }}</p>
 
-        <div class="mt-4 text-right">
-          <button
-            type="submit"
-            [ngClass]="{
-              'opacity-50': inSubmission
-            }"
-            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 focus:outline-none disabled:opacity-50 disabled:bg-indigo-400"
-            [disabled]="uploadForm.invalid || inSubmission"
-          >
-            Publish
-          </button>
-        </div>
-      </form>
+          <!-- Ubed's Method -->
+          <!-- <p>{{ (percentage | async | number: "1.0-0") + "%" }}</p> -->
+        </app-alert>
+
+        <!-- Form -->
+        <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+          <!-- Screenshots -->
+          <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div
+              *ngFor="let screenShot of screenShots"
+              class="border-8 cursor-pointer border-transparent"
+              [ngClass]="{
+                'border-green-400': selectedScreenshot === screenShot
+              }"
+              (click)="selectedScreenshot = screenShot"
+            >
+              <img [src]="screenShot | safeURL" />
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div class="mt-4">
+            <label class="block text-xl mb-4">Title</label>
+            <app-input [control]="title" placeholder="Enter Title"> </app-input>
+          </div>
+
+          <div class="mt-4 text-right">
+            <button
+              type="submit"
+              [ngClass]="{
+                'opacity-50': inSubmission
+              }"
+              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm rounded-md text-white bg-indigo-600 focus:outline-none disabled:opacity-50 disabled:bg-indigo-400"
+              [disabled]="uploadForm.invalid || inSubmission"
+            >
+              Publish
+            </button>
+          </div>
+        </form>
+      </ng-template>
     </ng-template>
   </div>
 </section>
