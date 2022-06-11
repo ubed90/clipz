@@ -24,7 +24,8 @@
   }
 
   .links,
-  .page-links {
+  .page-links,
+  .meta-data {
     flex-direction: column;
     justify-content: center;
     align-items: center;
