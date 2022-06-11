@@ -18,6 +18,9 @@ export class NavComponent implements OnInit, OnDestroy {
   userName: string = '';
   userNameSubscription$: Subscription = new Subscription();
 
+  // Opening and Closing Nav on Mobile Device
+  isOpened: boolean = false;
+
   constructor(
     public modal: ModalService,
     public auth: AuthService,
@@ -50,5 +53,9 @@ export class NavComponent implements OnInit, OnDestroy {
     }
 
     await this.auth.signOut();
+  }
+
+  toggleNav() {
+    this.isOpened = !this.isOpened;
   }
 }

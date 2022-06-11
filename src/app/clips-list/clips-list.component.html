@@ -1,5 +1,5 @@
 <!-- Clips List -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 lg:px-0">
   <a
     *ngFor="let clip of clipService.pageClips"
     [routerLink]="['/', 'clip', clip.docID]"
@@ -33,7 +33,7 @@
     <!-- Body -->
     <div class="p-8">
       <!-- Heading -->
-      <h2 class="text-3xl mb-2">{{ clip.title }}</h2>
+      <h2 class="text-lg md:text-3xl mb-2">{{ clip.title }}</h2>
 
       <!-- Name & Date -->
       <p class="mb-0">

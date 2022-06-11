@@ -1,9 +1,9 @@
 <!-- Top Bar -->
 <section class="container mx-auto my-8 bg-secondary p-6">
-  <div class="rounded relative flex justify-between">
+  <div class="rounded relative flex flex-col md:flex-row justify-between gap-4">
     <a
       href="#"
-      class="bg-indigo-400 text-white py-4 px-10 text-xl"
+      class="bg-indigo-400 text-white py-2 px-6 text-center text-xl"
       routerLink="/upload"
       >Upload Videos</a
     >
@@ -11,7 +11,7 @@
     <!-- Sort Videos -->
     <select
       (change)="sort($event)"
-      class="text-black px-8 text-xl outline-none appearance-none"
+      class="text-black px-6 py-2 text-xl text-center outline-none appearance-none"
     >
       <option value="1" [selected]="videoOrder === '1'">Recent Uploads</option>
       <option value="2" [selected]="videoOrder === '2'">Oldest Uploads</option>
@@ -20,7 +20,7 @@
 </section>
 
 <!-- User's Video Section -->
-<div class="container mx-auto my-8">
+<div class="container mx-auto my-8 px-2">
   <!-- Video List -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <div
@@ -37,7 +37,7 @@
       </a>
 
       <!-- Body -->
-      <div class="p-6 text-2xl">
+      <div class="p-6 text-lg md:text-2xl">
         <!-- Link -->
         <a [routerLink]="['/', 'clip', clip.docID]" class="font-bold mb-2">
           {{ clip.title }}
